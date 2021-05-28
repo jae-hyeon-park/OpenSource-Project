@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+</head>
+<body>
+	<div id="map" style="width:100%;height:100vh;"></div>
+
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b3dc4c0cdbea0a075d373008b5cda931"></script>
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(33.25161055386232, 126.56679772700981), // 지도의 중심좌표
+		        level: 4, // 지도의 확대 레벨
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+		    }; 
+
+		// 지도를 생성한다 
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		var 데이터 = [
+			[33.25161055386232, 126.56879772700981, '<div style="padding:5px;">서귀포시민회관 </div>'],
+			[33.25161055386232, 126.56979572700982, '<div style="padding:5px;">동백동산습지센터 </div>'],
+			[33.25161055386232, 126.56179672700983, '<div style="padding:5px;">서귀포시민회관2 </div>']
+		]
+		for(var i=0; i< 데이터.length; i++){
+		// 지도에 마커를 생성하고 표시한다
+		var marker = new kakao.maps.Marker({
+		    position: new kakao.maps.LatLng(데이터[i][0], 데이터[i][1]), // 마커의 좌표
+		    map: map // 마커를 표시할 지도 객체
+		});
+			// 인포윈도우를 생성합니다
+			var infowindow = new kakao.maps.InfoWindow({
+    	content : 데이터[i][2] 
+		
+		});
+		kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    	kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+		function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+		function makeOutListener(infowindow) {
+    	return function() {
+        infowindow.close();
+    };
+}
+	}
+
+		var 데이터2 = [
+			[33.25161055386232, 126.56779772700981, '<div style="padding:5px;">2서귀포시민회관 </div>'],
+			[33.25161055386232, 126.56579572700982, '<div style="padding:5px;">2동백동산습지센터 </div>'],
+			[33.25161055386232, 126.56479672700983, '<div style="padding:5px;">2서귀포시민회관2 </div>']
+		]
+		for(var i=0; i< 데이터2.length; i++){
+		var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(32, 34), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+    markerPosition = new kakao.maps.LatLng(데이터2[i][0], 데이터2[i][1]); // 마커가 표시될 위치입니다
+
+// 마커를 생성합니다
+var marker2 = new kakao.maps.Marker({
+    position: markerPosition, 
+    image: markerImage // 마커이미지 설정 
+});
+
+		
+// 마커가 지도 위에 표시되도록 설정합니다
+marker2.setMap(map); 
+			// 인포윈도우를 생성합니다
+			var infowindow = new kakao.maps.InfoWindow({
+    	content : 데이터2[i][2]
+		
+		});
+		kakao.maps.event.addListener(marker2, 'mouseover', makeOverListener(map, marker2, infowindow));
+    	kakao.maps.event.addListener(marker2, 'mouseout', makeOutListener(infowindow));
+		function makeOverListener(map, marker2, infowindow) {
+    return function() {
+        infowindow.open(map, marker2);
+    };
+}
+
+		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+		function makeOutListener(infowindow) {
+    	return function() {
+        infowindow.close();
+    };
+}
+		}
+		
+	</script>
+</body>
+</html>
